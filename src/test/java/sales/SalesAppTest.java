@@ -8,10 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -90,7 +87,6 @@ public class SalesAppTest {
         Sales result = mockSalesApp.getSales(anyString());
 
         Assert.assertNotNull(result);
-
     }
 
     @Test
@@ -103,7 +99,6 @@ public class SalesAppTest {
         Sales result = mockSalesApp.getSales(anyString());
 
         Assert.assertNull(result);
-
     }
 
 
@@ -116,6 +111,23 @@ public class SalesAppTest {
         Sales result = mockSalesApp.getSales(anyString());
 
         Assert.assertNull(result);
+    }
+
+    @Test
+    public void testUploadReportDocument_giveSalesActivityReport_thenCallUploadDocument() {
+        mockSalesApp.uploadReportDocument(new SalesActivityReport());
+        Mockito.verify(ecmService, times(1)).uploadDocument(anyString());
+    }
+
+    @Test
+    public void testGetSalesReportDataList_giveSales_thenReturnReportDataList() {
+        List<SalesReportData> reportDataList = Arrays.asList(new SalesReportData());
+        when(salesReportDao.getReportData(any())).thenReturn(reportDataList);
+
+        List<SalesReportData> result = mockSalesApp.getSalesReportDataList(any());
+
+        Assert.assertEquals(1, result.size());
+        Mockito.verify(salesReportDao, times(1)).getReportData(any());
 
     }
 
