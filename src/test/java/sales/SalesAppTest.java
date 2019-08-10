@@ -1,5 +1,6 @@
 package sales;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -22,7 +23,6 @@ public class SalesAppTest {
 
     @Test
     public void testGenerateReport_giveSaleIdAndIsNatTrade() {
-        List<String> Headers = new ArrayList<>();
         SalesApp salesApp = spy(new SalesApp());
 
         doReturn(new Sales()).when(salesApp).getSales(any());
@@ -32,11 +32,30 @@ public class SalesAppTest {
         doNothing().when(salesApp).uploadReportDocument(any());
 
         salesApp.generateSalesActivityReport("DUMMY", false);
+
         Mockito.verify(salesApp, times(1)).getSales(any());
         Mockito.verify(salesApp, times(1)).getSalesReportDataList(any());
         Mockito.verify(salesApp, times(1)).generateReport(anyList(), anyList());
         Mockito.verify(salesApp, times(1)).getHeaders(anyBoolean());
         Mockito.verify(salesApp, times(1)).uploadReportDocument(any());
+    }
+
+    @Test
+    public void testGetHeaders_giveIsNatTradeIsTrue_thenReturnHeadersContainsStringTime(){
+        SalesApp salesApp = new SalesApp();
+        List<String> headers = salesApp.getHeaders(true);
+
+        Assert.assertEquals("Time", headers.get(3));
+        Assert.assertEquals(4, headers.size());
+    }
+
+    @Test
+    public void testGetHeaders_giveIsNatTradeIsFalse_thenReturnHeadersContainsStringLocalTime(){
+        SalesApp salesApp = new SalesApp();
+        List<String> headers = salesApp.getHeaders(false);
+
+        Assert.assertEquals("Local Time", headers.get(3));
+        Assert.assertEquals(4, headers.size());
     }
 
 
