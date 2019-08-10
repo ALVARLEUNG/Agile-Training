@@ -1,6 +1,5 @@
 package sales;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -46,8 +45,7 @@ public class SalesApp {
     }
 
     public List<SalesReportData> getSalesReportDataList(Sales sales) {
-        List<SalesReportData> reportDataList = salesReportDao.getReportData(sales);
-        return reportDataList;
+        return salesReportDao.getReportData(sales);
     }
 
     public Sales getSales(String salesId) {
